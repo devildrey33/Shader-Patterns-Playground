@@ -1,0 +1,25 @@
+{
+  "name": "shader-patterns",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "vite": "^4.0.4",
+    "vite-plugin-string": "^1.2.1"
+  },
+  "dependencies": {
+    "@codemirror/commands": "^6.2.1",
+    "@codemirror/lang-markdown": "^6.1.0",
+    "@codemirror/language-data": "^6.1.0",
+    "@codemirror/state": "^6.2.0",
+    "@codemirror/theme-one-dark": "^6.1.1",
+    "@codemirror/view": "^6.9.2",
+    "codemirror": "^6.0.1",
+    "lil-gui": "^0.17.0",
+    "three": "^0.148.0"
+  }
+}
