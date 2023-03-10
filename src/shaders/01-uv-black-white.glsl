@@ -1,6 +1,5 @@
-// uv from vertex shader
-varying vec2 vUv;
-uniform float uTime;
+varying vec2  vUv;      // uv from vertex shader                       
+uniform float uTime;    // Time in seconds
 
 // main function for this fragment shader
 void main() {
@@ -16,8 +15,9 @@ void main() {
     // Pass the inverted y coordinate to the three channels
     //strength = 1.0 - vUv.y;
 
-    // Pass the y coordinate multiplied by 10
-    //strength = vUv.y * 10.0;
+    // make only 2 steps (white and black)
+    //strength = step(0.5, strength);
 
+    // Use the final strength to make a gayscale
     gl_FragColor = vec4(strength, strength, strength, 1.0);
 }

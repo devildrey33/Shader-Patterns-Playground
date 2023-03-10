@@ -35,6 +35,7 @@ export default class Editor {
         // setup codemirror options
         this.language = new Compartment;
 
+        // Setup codemirror extensions
         this.extensions = [
             keymap.of([...defaultKeymap, ...historyKeymap]),
             history(),
@@ -53,25 +54,37 @@ export default class Editor {
             })
         ];
 
+        // Get the last shader opened
+        let name = window.localStorage.getItem("shaderName");
+        // If no last shader opened, set the name to empty string
+        if (name === null) name = "";
+        // if the name its not an empty string (so its the last opened)
+        if (name !== "") {
+            // set the HTML select value this name
+            this.fragments.select.value = name;
+        }
+
+        // Create a start state 
         this.startState = EditorState.create({
-            doc : this.fragments.getByPos(0),
+            doc : this.fragments.getCode(name),
             extensions: this.extensions
         })
 
         
-        // start codemirror inside of #CodeMirrorDiv 
+        // Start codemirror inside of #CodeMirrorDiv 
         this.editorView = new EditorView({
             state: this.startState,
             parent: document.getElementById("CodeMirrorDiv")
         })
 
-        // update the view material code
+        // Update the view material code
         this.updateFragment();
     }
 
-    setCode(code) {
+    setCode(shader) {
 //       this.editorView.setValue(code);
-        this.editorView.setState(EditorState.create({ doc: code, extensions: this.extensions }));
+        window.localStorage.setItem("shaderName", shader.name);
+        this.editorView.setState(EditorState.create({ doc: shader.code, extensions: this.extensions }));
 
         this.updateFragment();
     }

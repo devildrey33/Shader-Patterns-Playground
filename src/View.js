@@ -9,12 +9,23 @@ export default class View {
     }
 
     start() {
+        // Size of the view
+        this.sizes = {
+            width: window.innerWidth / 2,
+            height: window.innerHeight
+        }
+
         // Canvas
         this.canvas = document.querySelector('canvas.webgl');
         // Scene
         this.scene = new THREE.Scene();
+        // Base camera
+        this.camera = new THREE.PerspectiveCamera(75, this.sizes.width / this.sizes.height, 0.1, 100);
+        this.camera.position.set(0.25, - 0.25, 1);
+        this.scene.add(this.camera);
+
         // Geometry
-        this.geometry = new THREE.PlaneGeometry(1, 1, 32, 32)
+        this.geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
         // Material
         this.material = new THREE.ShaderMaterial({
             vertexShader    : vertexShader,
@@ -22,22 +33,19 @@ export default class View {
             side            : THREE.DoubleSide,
             uniforms        : {
                 uTime       : { value : 0.0 },
-                uSpeed      : { value : 0.1 },
+                uMouse      : { value : new THREE.Vector2(0, 0) },
+//                uResolution : { value : new THREE.Vector2(this.sizes.width, this.sizes.height) },
+//                uViewMatrix : { value : this.camera.matrixWorldInverse }
+/*                uSpeed      : { value : 0.1 },
                 uStep       : { value : 0.1 },
                 uAmplitude  : { value : 10.0 },
-                uDepth      : { value : 20.0 }
+                uDepth      : { value : 20.0 }*/
             }
-        })    
+        });
 
         // Mesh
         this.mesh = new THREE.Mesh(this.geometry, this.material);
         this.scene.add(this.mesh);
-
-        // Size of the view
-        this.sizes = {
-            width: window.innerWidth / 2,
-            height: window.innerHeight
-        }
 
         // Add a listener to the resize event to be able to update the view with a correct size
         window.addEventListener('resize', () => {
@@ -52,12 +60,18 @@ export default class View {
             // Update renderer
             this.renderer.setSize(this.sizes.width, this.sizes.height);
             this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Update the size in shader uniform
+//            this.material.uniforms.uResolution.x = this.sizes.width;
+//            this.material.uniforms.uResolution.y = this.sizes.height;
         })
 
-        // Base camera
-        this.camera = new THREE.PerspectiveCamera(75, this.sizes.width / this.sizes.height, 0.1, 100);
-        this.camera.position.set(0.25, - 0.25, 1);
-        this.scene.add(this.camera);
+        // Add a listener to the mousemove event to get mouse coordinates
+        this.canvas.addEventListener('mousemove', (event) => {
+            // Set the uniform uMouse with the mouse coordinates normalized to -1 to 1
+            this.material.uniforms.uMouse.x = (event.clientX / (this.sizes.width / 2)) - 1;
+            this.material.uniforms.uMouse.y = (event.clientY / (this.sizes.height / 2)) - 1;
+        });
 
         // Orbit Controls
         this.controls = new OrbitControls(this.camera, this.canvas);
@@ -65,7 +79,7 @@ export default class View {
 
         // Renderer
         this.renderer = new THREE.WebGLRenderer({
-            canvas: this.canvas,
+            canvas    : this.canvas,
             antialias : true
         })
         this.renderer.setSize(this.sizes.width, this.sizes.height)

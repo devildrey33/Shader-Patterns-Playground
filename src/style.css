@@ -40,3 +40,14 @@ body
 #lil-gui {
     z-index: 1;
 }
+
+#shaders {
+    position:relative;
+    padding:2px;
+    margin:2px;
+    width:400px;
+}
+
+/* full height for the editor */
+.cm-editor { height: 100% }
+.cm-scroller { overflow: auto }
