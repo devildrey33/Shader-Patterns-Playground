@@ -1,6 +1,7 @@
 import Main from "./Main.js"
 import Fragment01 from './shaders/01-uv-black-white.glsl'
 import Fragment02 from './shaders/02-uv-color.glsl'
+import Fragment03 from './shaders/03-circle.glsl'
 import Fragment98 from './shaders/98-flames.glsl'
 import Fragment99 from './shaders/99-manga-inflames-tornado.glsl'
 
@@ -11,11 +12,12 @@ export default class FragmentList {
         this.editor = this.main.editor;
 
         // Get the html select tag 
-        this.select = document.getElementById("shaders");
+        this.select = document.getElementById("ShaderCombo");
 
         this.list = [ 
             { name : "01-uv-black-white"            , code : Fragment01 },
             { name : "02-uv-color"                  , code : Fragment02 },
+            { name : "03-circle"                    , code : Fragment03 },
             { name : "98-flames"                    , code : Fragment98 },
             { name : "99-manga-inflames-tornado"    , code : Fragment99 },
         ];
@@ -26,6 +28,11 @@ export default class FragmentList {
             for (let i = 0; i < this.list.length; i++) {
                 // if the shader name its the same of the event
                 if (this.list[i].name === event.target.value) {
+                    // Get current url without tags
+                    const url = window.location.href.split("#")[0];
+                    // Push the new url with shader name as a tag
+                    history.pushState(null, null,  url + "#" + this.list[i].name);
+    
                     // Tell the editor to set this shader
                     this.main.editor.setCode(this.list[i]);
                     break;
@@ -43,11 +50,13 @@ export default class FragmentList {
 
         // look for the code asociated with the name
         for (let i = 0; i < this.list.length; i++) {
-            if (name === this.list[i].name) return this.list[i].code;
+            if (name === this.list[i].name) {
+                return this.list[i].code;
+            }
         }
 
-        // never shoud get here...
-        return "ERROR GETING CODE";
+        // never should get here...
+        return "ERROR GETING CODE : " + name;
     }
 
     generateSelect() {

@@ -28,7 +28,8 @@ body
     overflow-y:auto;
 }
 
-#ShaderCombo {
+/* Space for the shader list combobox */
+#Shaders {
     position:fixed;
     width:50%;
     left: 50%;
@@ -41,7 +42,8 @@ body
     z-index: 1;
 }
 
-#shaders {
+/* ComboBox with the shader list */
+#ShaderCombo {
     position:relative;
     padding:2px;
     margin:2px;
@@ -51,3 +53,24 @@ body
 /* full height for the editor */
 .cm-editor { height: 100% }
 .cm-scroller { overflow: auto }
+
+
+/* width its less than height */
+@media screen and (max-width: 767px) and (orientation: portrait) {
+
+    #CodeMirrorDiv {
+        display: none;
+    }
+
+    #Shaders {
+        width:100%;
+        left: 0;
+        top:auto;
+        bottom: 0px;        
+    }
+
+    .webgl {
+        width:100%;
+        height: calc(100% - 20px);
+    }
+}

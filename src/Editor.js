@@ -54,11 +54,22 @@ export default class Editor {
             })
         ];
 
-        // Get the last shader opened
-        let name = window.localStorage.getItem("shaderName");
-        // If no last shader opened, set the name to empty string
-        if (name === null) name = "";
-        // if the name its not an empty string (so its the last opened)
+        let name = "";
+
+        // if the url contains a hash, try to open-it
+        if (window.location.hash !== "") {
+            name = window.location.hash.slice(1);
+        }
+
+        // if the url doesnt have a hash try to load the local storage
+        if (window.location.hash === "") {            
+            // Get the last shader opened
+            name = window.localStorage.getItem("shaderName");
+            // If no last shader opened, set the name to empty string
+            if (name === null) name = "";
+            // if the name its not an empty string (so its the last opened)
+        }
+
         if (name !== "") {
             // set the HTML select value this name
             this.fragments.select.value = name;
@@ -82,16 +93,21 @@ export default class Editor {
     }
 
     setCode(shader) {
-//       this.editorView.setValue(code);
+        // Update the local storage last opened shader
         window.localStorage.setItem("shaderName", shader.name);
+        // Set the new code into the editor
         this.editorView.setState(EditorState.create({ doc: shader.code, extensions: this.extensions }));
-
+        // Compile and update the new shader
         this.updateFragment();
     }
 
     // Apply the updated code to the fragment shader
     updateFragment() {
+        // Set time to 0
+        this.view.material.uniforms.uTime.value = 0;
+        // Update the fragment shader
         this.view.material.fragmentShader = this.editorView.state.doc.toString();    
+        // Tell THREE.JS to update this material
         this.view.material.needsUpdate = true;
     }
 

@@ -11,7 +11,7 @@ export default class View {
     start() {
         // Size of the view
         this.sizes = {
-            width: window.innerWidth / 2,
+            width: (window.innerWidth > 767) ? window.innerWidth / 2 : window.innerWidth,
             height: window.innerHeight
         }
 
@@ -50,7 +50,7 @@ export default class View {
         // Add a listener to the resize event to be able to update the view with a correct size
         window.addEventListener('resize', () => {
             // Update sizes
-            this.sizes.width = window.innerWidth / 2;
+            this.sizes.width  = (window.innerWidth > 767) ? window.innerWidth / 2 : window.innerWidth;
             this.sizes.height = window.innerHeight;
 
             // Update camera
