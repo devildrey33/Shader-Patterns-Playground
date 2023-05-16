@@ -2,6 +2,8 @@ import Main from "./Main.js"
 import Fragment01 from './shaders/01-uv-black-white.glsl'
 import Fragment02 from './shaders/02-uv-color.glsl'
 import Fragment03 from './shaders/03-circle.glsl'
+import Fragment96 from './shaders/96-portal.glsl'
+import Fragment97 from './shaders/97-lightning.glsl'
 import Fragment98 from './shaders/98-flames.glsl'
 import Fragment99 from './shaders/99-manga-inflames-tornado.glsl'
 
@@ -18,6 +20,8 @@ export default class FragmentList {
             { name : "01-uv-black-white"            , code : Fragment01 },
             { name : "02-uv-color"                  , code : Fragment02 },
             { name : "03-circle"                    , code : Fragment03 },
+            { name : "96-portal"                    , code : Fragment96 },
+            { name : "97-lightning"                 , code : Fragment97 },
             { name : "98-flames"                    , code : Fragment98 },
             { name : "99-manga-inflames-tornado"    , code : Fragment99 },
         ];
